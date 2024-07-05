@@ -1,6 +1,8 @@
 const express = require('express');
 const AppDataSource = require('./data-source');
-const { createUser, loginUser } = require('./src/controllers/userController');
+const { createUser, loginUser, getUserById } = require('./src/controllers/userController');
+const authMiddleware = require('./src/middleware/authMiddleware');
+const { getOrganizations, getOrganisationById } = require('./src/controllers/organizationController');
 require('dotenv').config();
 
 const app = express();
@@ -11,6 +13,9 @@ AppDataSource.initialize().then(() => {
 
   app.post('/auth/register', createUser);
   app.post('/auth/login', loginUser);
+  app.get('/api/users/:id',authMiddleware, getUserById)
+  app.get('/api/organisations',authMiddleware, getOrganizations)
+  app.get('/api/organisations/:orgId',authMiddleware, getOrganisationById)
 
   const port = 3000;
   app.listen(port, () => {
