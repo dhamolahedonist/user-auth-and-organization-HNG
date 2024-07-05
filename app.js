@@ -1,6 +1,6 @@
 const express = require('express');
 const AppDataSource = require('./data-source');
-const { createUser } = require('./src/controllers/userController');
+const { createUser, loginUser } = require('./src/controllers/userController');
 require('dotenv').config();
 
 const app = express();
@@ -9,7 +9,8 @@ app.use(express.json());
 AppDataSource.initialize().then(() => {
   console.log('Connected to the database');
 
-  app.post('/users', createUser);
+  app.post('/auth/register', createUser);
+  app.post('/auth/login', loginUser);
 
   const port = 3000;
   app.listen(port, () => {
