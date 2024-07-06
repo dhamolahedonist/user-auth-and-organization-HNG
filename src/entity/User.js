@@ -1,6 +1,5 @@
 const { EntitySchema } = require('typeorm');
 const userValidationSchema = require('../validation/userValidator');
-const Organization = require('./Organization');
 
 module.exports = new EntitySchema({
   name: 'User',
@@ -34,12 +33,11 @@ module.exports = new EntitySchema({
     }
   },
   relations: {
-    organization: {
-      type: 'many-to-one',
+    organizations: {
+      type: 'many-to-many',
       target: 'Organization',
-      joinColumn: true,
-      nullable: false
+      joinTable: true,  
     }
   },
-  joiSchema: userValidationSchema, 
+  joiSchema: userValidationSchema,
 });
