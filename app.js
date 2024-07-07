@@ -19,6 +19,17 @@ AppDataSource.initialize().then(() => {
   app.post('/api/organisations',authMiddleware, createOrganisation)
   app.post('/api/organisations/:orgId/users',addUserToOrganisation)
 
+  app.get("/", (req, res) => {
+    return res.json({
+      status: true,
+      data: {
+        documentationUrl:
+          "https://documenter.getpostman.com/view/20062547/2sA3e1BAAt",
+      },
+    });
+  });
+  
+
   const port = 3000;
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
