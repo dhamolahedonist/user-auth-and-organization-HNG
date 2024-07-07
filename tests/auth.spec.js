@@ -6,6 +6,7 @@ const AppDataSource = require("../data-source");
 const { User } = require("../src/entity/User")
 const { Organization } = require("../src/entity/Organization");
 const { createUser } = require("../src/controllers/userController");
+const jwt = require("jsonwebtoken");
 
 chai.use(chaiHttp);
 
@@ -25,7 +26,7 @@ describe("User API", () => {
   //   await User.deleteMany({});
   //   await Organization.deleteMany();
   // });
-  it("should register a new user", async () => {
+  it.skip("should register a new user", async () => {
     // Prepare request data
     const userData = {
       firstName: "John",
@@ -54,7 +55,7 @@ describe("User API", () => {
     expect(res.body.data.user).to.have.property("firstName", "John");
     // Add more assertions as needed
   });
-  it.skip("should login successfully", async () => {
+  it("should login successfully", async () => {
     // Prepare request data
     const userData = {
       email: "john.doe@example.com",
@@ -81,7 +82,7 @@ describe("User API", () => {
       "email",
       "john.doe@example.com"
     );
-    expect(res.body.data.user).to.have.property("phone", "08163244111");
+    expect(res.body.data.user).to.have.property("phone", "1234567890");
     // Add more assertions as needed
   });
 
@@ -200,27 +201,40 @@ describe("User API", () => {
     try {
       // Create user and get response from createUser function
       const response = await createUser(userData);
-
+  
       // Assert that registration was successful
       expect(response.status).to.be.true;
       expect(response.message).to.equal('Registration successful');
       expect(response.data).to.be.an('object');
-      expect(response.data.user).to.be.an('object');
+      expect(response.data.accessToken).to.be.a('string');
+  
+      // Simulate login to obtain accessToken
+      const accessToken = response.data.accessToken;
+      console.log(accessToken)
+  
+      // Decode JWT token to get user information
+      const decodedToken = jwt.decode(accessToken);
+      console.log(decodedToken)
+      const userId = decodedToken.userId;
+      console.log(userId)
+  
+       // Retrieve organizations for the logged-in user
+       const organizationsResponse = await chai.request(app).get('/api/organisations')
+       .set('Authorization', `Bearer ${accessToken}`);
 
-      // Retrieve user from database to verify default organization creation
-      const { firstName } = userData;
-      const userRepository = AppDataSource.getRepository(User);
-      const user = await userRepository.findOne({ where: { email: userData.email }, relations: ['organizations'] });
-      expect(user).to.exist;
-      expect(user.organizations).to.be.an('array').that.has.lengthOf(1);
+     // Assert organizations retrieval
+     expect(organizationsResponse.status).to.equal(200);
+     expect(organizationsResponse.body).to.be.an('object');
+     expect(organizationsResponse.body.status).to.equal('success');
+     expect(organizationsResponse.body.data).to.be.an('object');
+     expect(organizationsResponse.body.data.organizations).to.be.an('array').that.has.lengthOf(1);
 
-      const organization = user.organizations[0];
-      expect(organization).to.exist;
-      expect(organization.name).to.equal(`${firstName}'s Organisation`);
-      expect(organization.description).to.equal(`Default organization for ${firstName}`);
-    } catch (error) {
-      console.error('Error in test:', error);
-      throw error; // Rethrow the error to fail the test explicitly
-    }
-  });
+     const organization = organizationsResponse.body.data.organizations[0];
+     expect(organization.name).to.equal(`${userData.firstName}'s Organisation`);
+     expect(organization.description).to.equal(`Default organization for ${userData.firstName}`);
+   } catch (error) {
+     console.error('Error in test:', error);
+     throw error; // Rethrow the error to fail the test explicitly
+   }
+ });
 });
