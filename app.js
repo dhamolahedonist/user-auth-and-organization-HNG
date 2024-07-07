@@ -1,6 +1,6 @@
 const express = require('express');
 const AppDataSource = require('./data-source');
-const { createUser, loginUser, getUserById, addUserToOrganisation } = require('./src/controllers/userController');
+const { createUser, loginUser, getUserById, addUserToOrganisation, userRegistration } = require('./src/controllers/userController');
 const authMiddleware = require('./src/middleware/authMiddleware');
 const { getOrganizations, getOrganisationById, createOrganisation } = require('./src/controllers/organizationController');
 require('dotenv').config();
@@ -11,7 +11,7 @@ app.use(express.json());
 AppDataSource.initialize().then(() => {
   console.log('Connected to the database');
 
-  app.post('/auth/register', createUser);
+  app.post('/auth/register', userRegistration);
   app.post('/auth/login', loginUser);
   app.get('/api/users/:id',authMiddleware, getUserById)
   app.get('/api/organisations',authMiddleware, getOrganizations)
