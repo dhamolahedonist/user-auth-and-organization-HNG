@@ -3,7 +3,7 @@ const { expect } = require("chai");
 const chaiHttp = require("chai-http");
 const chai = require("chai");
 const AppDataSource = require("../data-source");
-const { User } = require("../src/entity/User")
+const { User } = require("../src/entity/User");
 const { Organization } = require("../src/entity/Organization");
 const { createUser } = require("../src/controllers/userController");
 const jwt = require("jsonwebtoken");
@@ -36,14 +36,8 @@ describe("User API", () => {
       phone: "08163244111",
     };
 
-    // Log request data before sending
-    console.log("Request:", userData);
-
     // Make POST request to register a new user
     const res = await chai.request(app).post("/auth/register").send(userData);
-
-    // Log response after receiving
-    console.log("Response:", res.body);
 
     // Assertions based on the API response
     expect(res).to.have.status(201);
@@ -61,9 +55,6 @@ describe("User API", () => {
       email: "john.doe@example.com",
       password: "password123",
     };
-
-    // Log request data before sending
-    console.log("Request:", userData);
 
     // Make POST request to register a new user
     const res = await chai.request(app).post("/auth/login").send(userData);
@@ -94,7 +85,6 @@ describe("User API", () => {
     };
 
     const res = await chai.request(app).post("/auth/register").send(userData);
-    console.log(userData);
 
     expect(res).to.have.status(422);
 
@@ -113,7 +103,6 @@ describe("User API", () => {
     };
 
     const res = await chai.request(app).post("/auth/register").send(userData);
-    console.log(userData);
 
     expect(res).to.have.status(422);
 
@@ -132,7 +121,6 @@ describe("User API", () => {
     };
 
     const res = await chai.request(app).post("/auth/register").send(userData);
-    console.log(userData);
 
     expect(res).to.have.status(422);
 
@@ -151,7 +139,6 @@ describe("User API", () => {
     };
 
     const res = await chai.request(app).post("/auth/register").send(userData);
-    console.log(res.status);
     expect(res).to.have.status(422);
     expect(res.body).to.be.an("object");
     expect(res.body.status).to.be.false;
@@ -170,71 +157,73 @@ describe("User API", () => {
       phone: "08163244111",
     };
 
-    // Log request data before sending
-    console.log("Request:", userData);
-
     // Make POST request to register a new user
     const res = await chai.request(app).post("/auth/register").send(userData);
 
-    // Log response after receiving
-    console.log("Response:", res.body);
-
     // Assertions based on the API response
     expect(res).to.have.status(422); // Expect Unprocessable Entity status
-    expect(res.body).to.be.an('object');
+    expect(res.body).to.be.an("object");
     expect(res.body.status).to.be.false;
-    expect(res.body.errors).to.be.an('array');
+    expect(res.body.errors).to.be.an("array");
     expect(res.body.errors).to.have.lengthOf(1);
-    expect(res.body.errors[0].field).to.equal('email');
-    expect(res.body.errors[0].message).to.equal('Email already exists. Please use a different email.');
+    expect(res.body.errors[0].field).to.equal("email");
+    expect(res.body.errors[0].message).to.equal(
+      "Email already exists. Please use a different email."
+    );
     // Add more assertions as needed
   });
-  it.only('should generate correct default organization name', async () => {
+  it.only("should generate correct default organization name", async () => {
     const userData = {
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      password: 'password123',
-      phone: '1234567890',
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      password: "password123",
+      phone: "1234567890",
     };
-  
+
     try {
       // Create user and get response from createUser function
       const response = await createUser(userData);
-  
+
       // Assert that registration was successful
       expect(response.status).to.be.true;
-      expect(response.message).to.equal('Registration successful');
-      expect(response.data).to.be.an('object');
-      expect(response.data.accessToken).to.be.a('string');
-  
+      expect(response.message).to.equal("Registration successful");
+      expect(response.data).to.be.an("object");
+      expect(response.data.accessToken).to.be.a("string");
+
       // Simulate login to obtain accessToken
       const accessToken = response.data.accessToken;
-      console.log(accessToken)
-  
+
       // Decode JWT token to get user information
       const decodedToken = jwt.decode(accessToken);
-      console.log(decodedToken)
+
       const userId = decodedToken.userId;
-      console.log(userId)
-  
-       // Retrieve organizations for the logged-in user
-       const organizationsResponse = await chai.request(app).get('/api/organisations')
-       .set('Authorization', `Bearer ${accessToken}`);
 
-     // Assert organizations retrieval
-     expect(organizationsResponse.status).to.equal(200);
-     expect(organizationsResponse.body).to.be.an('object');
-     expect(organizationsResponse.body.status).to.equal('success');
-     expect(organizationsResponse.body.data).to.be.an('object');
-     expect(organizationsResponse.body.data.organizations).to.be.an('array').that.has.lengthOf(1);
+      // Retrieve organizations for the logged-in user
+      const organizationsResponse = await chai
+        .request(app)
+        .get("/api/organisations")
+        .set("Authorization", `Bearer ${accessToken}`);
 
-     const organization = organizationsResponse.body.data.organizations[0];
-     expect(organization.name).to.equal(`${userData.firstName}'s Organisation`);
-     expect(organization.description).to.equal(`Default organization for ${userData.firstName}`);
-   } catch (error) {
-     console.error('Error in test:', error);
-     throw error; // Rethrow the error to fail the test explicitly
-   }
- });
+      // Assert organizations retrieval
+      expect(organizationsResponse.status).to.equal(200);
+      expect(organizationsResponse.body).to.be.an("object");
+      expect(organizationsResponse.body.status).to.equal("success");
+      expect(organizationsResponse.body.data).to.be.an("object");
+      expect(organizationsResponse.body.data.organizations)
+        .to.be.an("array")
+        .that.has.lengthOf(1);
+
+      const organization = organizationsResponse.body.data.organizations[0];
+      expect(organization.name).to.equal(
+        `${userData.firstName}'s Organisation`
+      );
+      expect(organization.description).to.equal(
+        `Default organization for ${userData.firstName}`
+      );
+    } catch (error) {
+      console.error("Error in test:", error);
+      throw error; // Rethrow the error to fail the test explicitly
+    }
+  });
 });
