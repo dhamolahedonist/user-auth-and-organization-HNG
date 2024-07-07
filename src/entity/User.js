@@ -1,45 +1,45 @@
-const { EntitySchema } = require('typeorm');
-const userValidationSchema = require('../validation/userValidator');
+const { EntitySchema } = require("typeorm");
+const userValidationSchema = require("../validation/userValidator");
 
 module.exports = new EntitySchema({
-  name: 'User',
-  tableName: 'users',
+  name: "User",
+  tableName: "users",
   columns: {
     userId: {
       primary: true,
-      type: 'uuid',
-      generated: 'uuid'
+      type: "uuid",
+      generated: "uuid",
     },
     firstName: {
-      type: 'varchar',
-      nullable: false
+      type: "varchar",
+      nullable: false,
     },
     lastName: {
-      type: 'varchar',
-      nullable: false
+      type: "varchar",
+      nullable: false,
     },
     email: {
-      type: 'varchar',
+      type: "varchar",
       unique: true,
-      nullable: false
-    }, 
+      nullable: false,
+    },
     password: {
-      type: 'varchar',
-      nullable: false
+      type: "varchar",
+      nullable: false,
     },
     phone: {
-      type: 'varchar',
-      nullable: true
-    }
+      type: "varchar",
+      nullable: true,
+    },
   },
   relations: {
     organizations: {
-      type: 'many-to-many',
-      target: 'Organization',
+      type: "many-to-many",
+      target: "Organization",
       joinTable: {
-        name: 'user_organizations',
-        joinColumn: { name: 'userId', referencedColumnName: 'userId' },
-        inverseJoinColumn: { name: 'orgId', referencedColumnName: 'orgId' },
+        name: "user_organizations",
+        joinColumn: { name: "userId", referencedColumnName: "userId" },
+        inverseJoinColumn: { name: "orgId", referencedColumnName: "orgId" },
       },
       cascade: true,
     },
