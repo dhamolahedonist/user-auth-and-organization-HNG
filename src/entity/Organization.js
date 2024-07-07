@@ -23,8 +23,12 @@ module.exports = new EntitySchema({
     users: {
       type: 'many-to-many',
       target: 'User',
-      joinTable: true, 
-    }
+      joinTable: {
+        name: 'user_organizations',
+        joinColumn: { name: 'orgId', referencedColumnName: 'orgId' },
+        inverseJoinColumn: { name: 'userId', referencedColumnName: 'userId' },
+      },
+    },
   },
   joiSchema: organizationValidationSchema
 });

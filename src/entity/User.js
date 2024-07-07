@@ -22,7 +22,7 @@ module.exports = new EntitySchema({
       type: 'varchar',
       unique: true,
       nullable: false
-    },
+    }, 
     password: {
       type: 'varchar',
       nullable: false
@@ -36,8 +36,13 @@ module.exports = new EntitySchema({
     organizations: {
       type: 'many-to-many',
       target: 'Organization',
-      joinTable: true,  
-    }
+      joinTable: {
+        name: 'user_organizations',
+        joinColumn: { name: 'userId', referencedColumnName: 'userId' },
+        inverseJoinColumn: { name: 'orgId', referencedColumnName: 'orgId' },
+      },
+      cascade: true,
+    },
   },
   joiSchema: userValidationSchema,
 });
