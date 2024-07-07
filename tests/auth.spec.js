@@ -1,4 +1,4 @@
-const app = require("../app"); // Adjust path as needed
+const app = require("../app"); 
 const { expect } = require("chai");
 const chaiHttp = require("chai-http");
 const chai = require("chai");

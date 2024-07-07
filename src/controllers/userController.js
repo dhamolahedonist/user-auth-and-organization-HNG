@@ -1,4 +1,3 @@
-// controllers/userController.js
 const { Repository } = require("typeorm");
 const UserSchema = require("../entity/User");
 const userValidationSchema = require("../validation/userValidator");
