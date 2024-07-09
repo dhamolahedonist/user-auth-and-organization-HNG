@@ -52,7 +52,7 @@ const createOrganisation = async (req, res) => {
 
     const responseData = {
       status: "success",
-      message: "Organization created successfully",
+      message: "Organisation created successfully",
       data: {
         orgId: organization.orgId,
         name: organization.name,
@@ -93,7 +93,7 @@ const getOrganizations = async (req, res) => {
 
     const responseData = {
       status: "success",
-      message: "Organizations retrieved successfully",
+      message: "Organisations retrieved successfully",
       data: {
         organizations: user.organizations.map((org) => ({
           orgId: org.orgId,
@@ -151,7 +151,7 @@ const getOrganisationById = async (req, res) => {
 
     const responseData = {
       status: "success",
-      message: "Organization retrieved successfully",
+      message: "Organisation retrieved successfully",
       data: { organization },
     };
 
