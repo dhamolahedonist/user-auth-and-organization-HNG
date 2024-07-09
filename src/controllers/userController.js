@@ -62,7 +62,7 @@ const createUser = async (userData) => {
     const orgName = `${firstName}'s Organisation`;
     const organization = organizationRepository.create({
       name: orgName,
-      description: `Default organization for ${firstName}`,
+      description: `Default organisation for ${firstName}`,
     });
     await organizationRepository.save(organization);
 
