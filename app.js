@@ -1,5 +1,15 @@
 const express = require("express");
 const AppDataSource = require("./data-source");
+const swaggerUi = require('swagger-ui-express');
+const path = require('path');
+const cors = require('cors');
+
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+const openApiDocument = require('./openapi.json');
 const {
   createUser,
   loginUser,
@@ -15,8 +25,6 @@ const {
 } = require("./src/controllers/organizationController");
 require("dotenv").config();
 
-const app = express();
-app.use(express.json());
 
 AppDataSource.initialize()
   .then(() => {
@@ -40,7 +48,13 @@ AppDataSource.initialize()
       });
     });
 
-    const port = process.env.PORT || 8080;
+    
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
+
+
+    const port = process.env.PORT || 3000;
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });

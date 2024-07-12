@@ -1,0 +1,235 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "HNG Task two",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://app-6a222c48-88ec-4380-b25c-748ce9c5cd78.cleverapps.io"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "paths": {
+      "/auth/register": {
+        "post": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Register user",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "firstName": "sam",
+                    "lastName": "moses",
+                    "email": "oduba1@gmail.com",
+                    "password": "damola",
+                    "phone": "08163244139"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "undefined": {
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Login user",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "email": "oduba1@gmail.com",
+                    "password": "damola"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "undefined": {
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/04a5ebef-45c8-4dce-8534-bb07e0b09dac": {
+        "get": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Get User by Id",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "undefined": {
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/organisations": {
+        "get": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Get all organisations for a user",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "undefined": {
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": null
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Create an Organization by a user",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "Sammy",
+                    "description": "organization added"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "undefined": {
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/organisations/55a7ad06-3765-4f5e-bc1f-c397ce393e2c": {
+        "get": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Get organisation by id",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {}
+              }
+            }
+          }
+        }
+      },
+      "/api/organisations/933e9070-308c-45f1-84ff-da761f978fdb/users": {
+        "post": {
+          "tags": [
+            "default"
+          ],
+          "summary": "Add an organization to a  user",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "userId": "905c6854-b163-4777-b1d4-7935adb9cb8c"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "undefined": {
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": null
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

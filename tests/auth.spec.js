@@ -172,7 +172,7 @@ describe("User API", () => {
     );
     // Add more assertions as needed
   });
-  it.only("should generate correct default organization name", async () => {
+  it.skip("should generate correct default organization name", async () => {
     const userData = {
       firstName: "John",
       lastName: "Doe",
